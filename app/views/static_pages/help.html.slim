@@ -1,2 +1,9 @@
-h1 StaticPages#help
-p Find me in app/views/static_pages/help.html.slim
+- provide :title, 'Help'
+h1 Help
+p
+  | Get help on Rail Tutorial at the
+  a href = 'http://railstutorial.jp/help'
+    | Rails Tuttorial help page
+  |  To get help on this sample app, see the
+  a href = 'http://railstutorial.jp/book'
+    |  Rails Tutorial book
