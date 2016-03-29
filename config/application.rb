@@ -23,5 +23,6 @@ module SampleApp
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.generators.template_engine = :slim
     config.generators.test_framework = :rspec
+    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
   end
 end
