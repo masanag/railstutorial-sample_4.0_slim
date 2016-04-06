@@ -94,6 +94,11 @@ describe 'AuthenticationPages' do
         before { patch user_path(wrong_user) }
         specify { expect(response).to redirect_to(root_path) }
       end
+
+      describe 'submitting a DELETE request to the Users#destroy action' do
+        before { delete user_path(user) }
+        specify { expect(response).to redirect_to(root_path) }
+      end
     end
   end
 end
