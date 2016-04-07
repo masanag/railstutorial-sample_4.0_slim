@@ -37,7 +37,7 @@ describe 'UserPages' do
           visit users_path
         end
 
-        it { should have_link('delete', href:user_path(User.first)) }
+        it { should have_link('delete', href: user_path(User.first)) }
         it 'should be able to delete another user' do
           expect do
             click_link('delete', match: :first)
@@ -138,8 +138,8 @@ describe 'UserPages' do
     describe 'forbidden attributes' do
       let(:params) do
         { user: { admin: true,
-          password: user.password,
-          password_confirmation: user.password } }
+                  password: user.password,
+                  password_confirmation: user.password } }
       end
 
       before do

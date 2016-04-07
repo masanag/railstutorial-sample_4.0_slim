@@ -62,6 +62,17 @@ describe 'AuthenticationPages' do
           it 'should render the desired protected page' do
             expect(page).to have_title('Edit user')
           end
+
+          describe 'when signing in again' do
+            before do
+              delete signout_path
+              sign_in(user)
+            end
+
+            it 'should render the default (profile) page' do
+              expect(page).to have_title(user.name)
+            end
+          end
         end
       end
 
@@ -81,6 +92,19 @@ describe 'AuthenticationPages' do
           it { should have_title('Sign in') }
         end
       end
+
+      describe 'as an admin user' do
+        let(:admin) { create(:admin) }
+        before do
+          sign_in admin, no_capybara: true
+        end
+
+        describe 'submitting a DELETE request to the Users#destroy acion' do
+          before { delete user_path(admin) }
+          specify { expect(response).to redirect_to(root_path) }
+          specify { expect(admin).not_to be_nil }
+        end
+      end
     end
 
     describe 'as valid user' do
@@ -88,12 +112,19 @@ describe 'AuthenticationPages' do
       before { sign_in user, no_capybara: true }
 
       describe 'submitting a GET request the Users#new action' do
+        before { get new_user_path }
         specify { expect(response).to redirect_to root_path }
+        specify do
+          expect(response.body).not_to match('Could not respond to your access')
+        end
       end
       describe 'submitting a POST request the Users#create action' do
+        before { post users_path }
         specify { expect(response).to redirect_to root_path }
+        specify do
+          expect(response.body).not_to match('Could not respond to your access')
+        end
       end
-
     end
 
     describe 'as wrong user' do
