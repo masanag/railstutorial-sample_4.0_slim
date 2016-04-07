@@ -18,6 +18,12 @@ describe 'AuthenticationPages' do
       it { should have_title('Sign in') }
       it { should have_error_message('Invalid') }
 
+      it { should_not have_link('Users') }
+      it { should_not have_link('Profile') }
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Sign out') }
+      it { should have_link('Sign in', href: signin_path) }
+
       describe 'after visiting another page' do
         before { click_link 'Home' }
         it { should_not have_selector('div.alert.alert-error') }
@@ -49,9 +55,7 @@ describe 'AuthenticationPages' do
       describe 'when attempting to visit a protected page' do
         before do
           visit edit_user_path(user)
-          fill_in 'Email', with: user.email
-          fill_in 'Password', with: user.password
-          click_button 'Sign in'
+          sign_in(user)
         end
 
         describe 'after signing in' do
@@ -77,6 +81,19 @@ describe 'AuthenticationPages' do
           it { should have_title('Sign in') }
         end
       end
+    end
+
+    describe 'as valid user' do
+      let(:user) { create(:user) }
+      before { sign_in user, no_capybara: true }
+
+      describe 'submitting a GET request the Users#new action' do
+        specify { expect(response).to redirect_to root_path }
+      end
+      describe 'submitting a POST request the Users#create action' do
+        specify { expect(response).to redirect_to root_path }
+      end
+
     end
 
     describe 'as wrong user' do
