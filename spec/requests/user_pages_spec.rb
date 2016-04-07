@@ -5,7 +5,7 @@ describe 'UserPages' do
 
   describe 'index' do
     before do
-      signin create(:user)
+      sign_in create(:user)
       create(:user, name: 'Bob', email: 'bob@example.com')
       create(:user, name: 'Ben', email: 'ben@example.com')
       visit users_path
@@ -33,7 +33,7 @@ describe 'UserPages' do
       describe 'as an admin user' do
         let(:admin) { create :admin }
         before do
-          signin admin
+          sign_in admin
           visit users_path
         end
 
@@ -101,7 +101,7 @@ describe 'UserPages' do
   describe 'edit' do
     let(:user) { create(:user) }
     before do
-      signin user
+      sign_in user
       visit edit_user_path(user)
     end
 

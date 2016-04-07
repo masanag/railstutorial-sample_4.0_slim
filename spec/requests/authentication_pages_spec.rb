@@ -26,7 +26,7 @@ describe 'AuthenticationPages' do
 
     describe 'with valid information' do
       let(:user) { create(:user) }
-      before { signin(user) }
+      before { sign_in(user) }
 
       it { should have_title(user.name) }
       it { should have_link('Users', href: users_path) }
@@ -82,7 +82,7 @@ describe 'AuthenticationPages' do
     describe 'as wrong user' do
       let(:user) { create(:user) }
       let(:wrong_user) { create(:user, email: 'wrong@example.com') }
-      before { signin user, no_capybara: true }
+      before { sign_in user, no_capybara: true }
 
       describe 'submitting a GET request the Users#edit action' do
         before { get edit_user_path(wrong_user) }
