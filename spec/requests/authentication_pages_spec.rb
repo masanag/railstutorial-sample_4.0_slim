@@ -93,16 +93,18 @@ describe 'AuthenticationPages' do
         end
       end
 
-      describe 'as an admin user' do
+      describe 'as admin user' do
         let(:admin) { create(:admin) }
         before do
           sign_in admin, no_capybara: true
         end
 
         describe 'submitting a DELETE request to the Users#destroy acion' do
-          before { delete user_path(admin) }
-          specify { expect(response).to redirect_to(root_path) }
-          specify { expect(admin).not_to be_nil }
+          specify do
+            expect do
+              delete user_path(admin)
+            end.not_to change(User, :count).by(-1)
+          end
         end
       end
     end
