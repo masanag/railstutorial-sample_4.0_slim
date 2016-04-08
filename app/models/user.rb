@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def feed
+    microposts
+  end
+
   private
 
   def create_remember_token
