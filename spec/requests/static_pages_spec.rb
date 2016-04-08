@@ -20,8 +20,9 @@ describe 'StaticPages' do
     describe 'for signed-in users' do
       let(:user) { create(:user) }
       before do
-        create(:micropost, user: user, content: 'Lorem ipsum')
-        create(:micropost, user: user, content: 'Dolor sit amet')
+        2.times do
+          create(:micropost, user: user)
+        end
         sign_in user
         visit root_path
       end
@@ -30,6 +31,10 @@ describe 'StaticPages' do
         user.feed.each do |item|
           expect(page).to have_selector("li##{item.id}", text: item.content)
         end
+      end
+
+      it "should show the user's micropsts count" do
+        expect(page).to have_content ("#{user.microposts.count} micropost")
       end
     end
   end
