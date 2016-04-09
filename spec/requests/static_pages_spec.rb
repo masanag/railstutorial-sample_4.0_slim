@@ -20,9 +20,8 @@ describe 'StaticPages' do
     describe 'for signed-in users' do
       let(:user) { create(:user) }
       before do
-        2.times do
-          create(:micropost, user: user)
-        end
+        create(:micropost, user: user)
+        create(:micropost, user: user, content: 'Dolor sit amet')
         sign_in user
         visit root_path
       end
@@ -73,5 +72,18 @@ describe 'StaticPages' do
     expect(page).to have_title 'Sign up'
     click_link 'sample app'
     expect(page).not_to have_title '|'
+  end
+
+  describe 'micropost pagination' do
+    let(:user) { create(:user) }
+    before do
+      31.times { create(:micropost, user: user) }
+      sign_in user
+      visit root_path
+    end
+
+    after { user.microposts.destroy_all }
+
+    it { should have_selector('div.pagination') }
   end
 end
