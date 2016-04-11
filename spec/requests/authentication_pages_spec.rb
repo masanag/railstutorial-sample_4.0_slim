@@ -140,6 +140,12 @@ describe 'AuthenticationPages' do
           expect(response.body).not_to match('Could not respond to your access')
         end
       end
+
+      describe 'cannot delete other users\' posts' do
+        let(:other_user) { create(:user) }
+        before { visit user_path(other_user) }
+        it { should_not have_link 'delete' }
+      end
     end
 
     describe 'as wrong user' do
